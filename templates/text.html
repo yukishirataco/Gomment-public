@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+<body>
+<script src="//unpkg.com/vue/dist/vue.js"></script>
+<script src="//unpkg.com/element-ui@2.15.6/lib/index.js"></script>
+<div id="app">
+    <el-form ref="form" :model="form">
+        <el-row :gutter="20">
+            <el-col :span="12">
+                <el-form-item label="邮箱地址">
+                    <el-input v-model="form.mail" style="width:100%;"></el-input>
+                </el-form-item>
+            </el-col>
+            <el-col :span="12">
+                <el-form-item label="昵称">
+                    <el-input v-model="form.nickname"style="width:100%;"></el-input>
+                </el-form-item>
+            </el-col>
+        </el-row>
+        <el-form-item label="留言内容">
+            <el-input type="textarea" v-model="form.text"></el-input>
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" @click="onSubmit">提交</el-button>
+        </el-form-item>
+    </el-form>
+</div>
+</body>
+<!-- import Vue before Element -->
+
+<!-- import JavaScript -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    var Main = {
+        data() {
+            return {
+                form: {
+                    mail: '',
+                    text: '',
+                    nickname: '',
+                }
+            }
+        },
+        methods: {
+            onSubmit() {
+                console.log('submit!');
+                axios
+                    .post('/comments', this.form)
+                    .then(response => (this.form = response))
+                    .catch(function (error) { // 请求失败处理
+                        console.log(error);
+                    });
+            }
+        }
+    }
+    var Ctor = Vue.extend(Main)
+    new Ctor().$mount('#app')
+</script>
+</html>
+
